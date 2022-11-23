@@ -3,9 +3,9 @@ additional assigment for math
 
 About && Help
 ---
-This program shows information about specified by user quadratic function    
-In Menu you enter number that is assigned to specific action and than press enter new window will appear
+This program shows information about specified by user quadratic function  
 
+In Menu you enter number that is assigned to specific action and than press enter new window will appear
 > For Higher a values function can sometimes bug out and not show or show partialy
 
 Run
