@@ -47,6 +47,7 @@ def menu(ref_a: float, ref_b: float, ref_c: float):
                 case 0:
                     return None, None, None
 
+
 a = 0.4
 b = 5.0
 c = 10.0
@@ -80,11 +81,16 @@ while True:
     # function
     for x in range(x_min, x_max, 1):
 
-        first = 400 - ((a * x) ** 2 - (b * x) - c)
-        second = 400 - ((a * (x + 1)) ** 2 - (b * (x + 1)) - c)
+        # less than or equal becouse i reversed everything
+        if a <= 0:
+            first = 400 + ((a * (x ** 2)) + (b * x) + c)
+            second = 400 + ((a * ((x + 1) ** 2)) + (b * (x + 1)) + c)
+        else:
+            first = 400 + ((a * (x ** 2)) + (b * x) + c)
+            second = 400 + ((a * ((x + 1) ** 2)) + (b * (x + 1)) + c)
 
         if a == 0 and b == 0:
-            second += 1     # set to straight line by adding 1 to x value
+            second += 1  # set to straight line by adding 1 to x value
 
         x_shift = x + 450
 
@@ -107,14 +113,16 @@ while True:
     elif a == 0 and b == 0 and c == 0:
         x_zero = "Inf. number of x"
     elif a == 0:
-        x_zero = f"x = {-c/b}"
+        x_zero = f"x = {-c / b}"
     elif delta == 0:
         x_zero = f"x ={-b / (2 * a)}"
     else:
         x1 = (-b - sqrt(delta)) / (2 * a)
         x2 = (-b + sqrt(delta)) / (2 * a)
-        if x1 != x2:
-            x_zero = "x1 = {:.2f}   x2 = {:.2f}".format(x1, x2)
+        if x1 > x2:
+            x_zero = "x1 = {:.2f}   x2 = {:.2f}".format(x2, x1)
+        else:
+            x_zero = "x1 = {:.2f}   x2 = {:.2f}".format(x1, x2)     # reverse for sad function
 
     canvas.pack(side=RIGHT)
 
@@ -139,28 +147,42 @@ while True:
     d_input_label = Label(root, text=d_input_text)
     d_input_label.pack(side=LEFT and TOP)
 
-    p, q = -b / (2 * a), -delta / (4 * a)
+    if a != 0:
+        p, q = -b / (2 * a), -delta / (4 * a)
+        p_input_text = "p = {:.2f}".format(p)
+        p_input_label = Label(root, text=p_input_text)
+        p_input_label.pack(side=LEFT and TOP)
 
-    p_input_text = "p = {:.2f}".format(p)
-    p_input_label = Label(root, text=p_input_text)
-    p_input_label.pack(side=LEFT and TOP)
+        q_input_text = "q = {:.2f}".format(q)
+        q_input_label = Label(root, text=q_input_text)
+        q_input_label.pack(side=LEFT and TOP)
 
-    q_input_text = "q = {:.2f}".format(q)
-    q_input_label = Label(root, text=q_input_text)
-    q_input_label.pack(side=LEFT and TOP)
-
-    if p >= 0:
-        if q >= 0:
-            can_input_text = "Canonical form:\n{:.2f}(x - {:.2f})^2 + {:.2f}\n".format(a, p, q)
+        if p >= 0:
+            if q >= 0:
+                can_input_text = "Canonical form:\n{:.2f}(x - {:.2f})^2 + {:.2f}\n".format(a, p, q)
+            else:
+                can_input_text = "Canonical form:\n{:.2f}(x - {:.2f})^2 - {:.2f}\n".format(a, p, -q)
         else:
-            can_input_text = "Canonical form:\n{:.2f}(x - {:.2f})^2 - {:.2f}\n".format(a, p, -q)
+            if q >= 0:
+                can_input_text = "Canonical form:\n{:.2f}(x - {:.2f})^2 + {:.2f}\n".format(a, -p, q)
+            else:
+                can_input_text = "Canonical form:\n{:.2f}(x - {:.2f})^2 - {:.2f}\n".format(a, -p, -q)
+
+        can_input_label = Label(root, text=can_input_text)
+        can_input_label.pack(side=LEFT and TOP)
     else:
-        if q >= 0:
-            can_input_text = "Canonical form:\n{:.2f}(x - {:.2f})^2 + {:.2f}\n".format(a, -p, q)
-        else:
-            can_input_text = "Canonical form:\n{:.2f}(x - {:.2f})^2 - {:.2f}\n".format(a, -p, -q)
-    can_input_label = Label(root, text=can_input_text)
-    can_input_label.pack(side=LEFT and TOP)
+        p, q = None, None
+        p_input_text = "p = No p".format(p)
+        p_input_label = Label(root, text=p_input_text)
+        p_input_label.pack(side=LEFT and TOP)
+
+        q_input_text = "q = No q".format(q)
+        q_input_label = Label(root, text=q_input_text)
+        q_input_label.pack(side=LEFT and TOP)
+
+        can_input_text = "Canonical form:\nNo for linear function"
+        can_input_label = Label(root, text=can_input_text)
+        can_input_label.pack(side=LEFT and TOP)
 
     a_input_text = f"a = {a}"
     a_input_label = Label(root, text=a_input_text)
