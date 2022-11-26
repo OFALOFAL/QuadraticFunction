@@ -12,6 +12,7 @@ def clear():
 def menu(ref_a: float, ref_b: float, ref_c: float, ref_color: int):
     while True:
         clear()
+        # print menu & wait for input
         choice = input(f'a = {ref_a}\n'
                        f'b = {ref_b}\n'
                        f'c = {ref_c}\n'
@@ -27,6 +28,7 @@ def menu(ref_a: float, ref_b: float, ref_c: float, ref_color: int):
                        '4: change color\n'
                        '5: calculate\n'
                        '0: exit\n> ')
+        # mach option
         if choice.isnumeric():
             match int(choice):
                 case 1:
@@ -45,6 +47,7 @@ def menu(ref_a: float, ref_b: float, ref_c: float, ref_color: int):
                     temp = input("type number to choose, anything else to see viable colors\n"
                                  "color: ")
                     if temp.isnumeric():
+                        # modulo to not get out of range
                         ref_color = int(temp) % len(COLORS)
                     else:
                         inc = 0
@@ -56,40 +59,45 @@ def menu(ref_a: float, ref_b: float, ref_c: float, ref_color: int):
                         print()
                         os.system('pause')
                 case 5:
+                    # return values
                     return ref_a, ref_b, ref_c, ref_color
                 case 0:
+                    # return None to quit
                     return None, None, None, None
 
-
+# set default
 a = 1
 b = 0
 c = -1
 color = 100
+x_zero_name = "Inf. number of zero points"
 while True:
-    options = {1, 2, 0}
-    x_zero_name = "Inf. number of zero points"
-
+    # get values from menu
     a, b, c, color = menu(a, b, c, color)
     if a is None:
         break
 
+    # set window
     root = Tk()
     root.title('Quadratic Function')
     root.geometry("1200x800")
     root.resizable(False, False)
 
+    # seperate info from graph
     sep = ttk.Separator(orient=VERTICAL)
     sep.place(x=195, y=0, relheight=1)
 
+    # deafult half of Cartesian coordinate system
     half_size = 350
     canvas = Canvas(root, width=1000, height=800)
     canvas.create_line(100, 400, 800, 400)  # x
     canvas.create_line(450, 50, 450, 750)  # y
 
+    # calculate delta
     delta = b ** 2 - 4 * a * c
 
+    # set default for zero places
     x_zero = None
-
     x1, x2 = None, None
 
     # calculate zero places
@@ -116,6 +124,7 @@ while True:
 
     canvas.pack(side=RIGHT)
 
+    # set info
     enter_text = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     a_input_label = Label(root, text=enter_text)
     a_input_label.pack(side=LEFT and TOP)
@@ -181,6 +190,7 @@ while True:
     zero_place_label = Label(root, text=zero_place_text)
     zero_place_label.pack(side=LEFT and TOP)
 
+    # set zoom range
     if x_zero is not None or x1 is not None:
         if x1 is not None:
             x_min = int(x1) - 2 + int(abs(q))
@@ -202,6 +212,10 @@ while True:
         x_min = int(-c) - 3
         x_max = -x_min
 
+    # set zoom
+    zoom = half_size / abs(x_max)
+
+    # set labels for center and borders
     mark_text_min = str(x_min)
     mark_text_max = str(x_max)
     top_label = Label(root, text=mark_text_max)
@@ -220,7 +234,6 @@ while True:
     zero_point_label.place(x=630, y=405, relheight=0.001, height=10)
 
     # reverse for reversed yaxis on tkinter
-    zoom = half_size / abs(x_max)
     a = -a / zoom
     b = -b
     c = -c * zoom
@@ -248,6 +261,7 @@ while True:
             x += 0.1 * zoom
             xP1 += 0.1 * zoom
 
+    # set back to normal state
     a = -a * zoom
     b = -b
     c = -c / zoom
