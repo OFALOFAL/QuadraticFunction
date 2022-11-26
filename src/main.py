@@ -65,6 +65,7 @@ def menu(ref_a: float, ref_b: float, ref_c: float, ref_color: int):
                     # return None to quit
                     return None, None, None, None
 
+
 # set default
 a = 1
 b = 0
@@ -193,13 +194,13 @@ while True:
     # set zoom range
     if x_zero is not None or x1 is not None:
         if x1 is not None:
-            x_min = int(x1) - 2 + int(abs(q))
+            x_min = -abs(int(x1) + int(q)) - 2
             x_max = -x_min
             if x_max < x2:
-                x_max = int(x2) + 2 + int(abs(q))
+                x_max = -abs(int(x1) + int(q)) - 2
                 x_min = -x_max
             if x_min > x1:
-                x_min = int(x1) - 2 + int(abs(q))
+                x_min = -abs(int(x1) + int(q)) - 2
                 x_max = -x_min
         else:
             if c > 0:
