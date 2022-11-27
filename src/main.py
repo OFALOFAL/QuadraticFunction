@@ -275,8 +275,14 @@ while True:
                 min_zoom = -4
                 max_zoom = 4
     else:
-        min_zoom = int(-c) - 4
-        max_zoom = -min_zoom
+        if a != 0:
+            # if is quadric without zero set so that you can see vertex
+            min_zoom = -abs(int(-p) + int(q)) - 2
+            max_zoom = -min_zoom
+        else:
+            # if only c in not 0 set so that you can see function
+            min_zoom = int(-c) - 4
+            max_zoom = -min_zoom
 
     if max_zoom < 4:
         max_zoom = 4
@@ -370,12 +376,12 @@ while True:
 
     # draw x and y for vertex if needed
     if a != 0:
-        if -p not in getLeftX and p != 0:
+        if -p not in getLeftX and p not in getLeftX and p != 0:
             p_vertex_label = Label(root, text="{:.1f}".format(p))
             p_vertex_label.place(x=635 + p * zoom, y=380, relheight=0.001, height=10)
             new_tick = canvas.create_line(450 + p * zoom, 0, 450 + p * zoom, 800, fill=COLORS[color], dash=(2, 2))
 
-        if -q not in getLeftY and q != 0:
+        if -q not in getLeftY and q not in getLeftY and q != 0:
             q_vertex_label = Label(root, text="{:.1f}".format(q))
             q_vertex_label.place(x=650, y=395 + -q * zoom, relheight=0.001, height=10)
             new_tick = canvas.create_line(0, 400 + -q * zoom, 900, 400 + -q * zoom, fill=COLORS[color], dash=(2, 2))
