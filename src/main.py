@@ -256,6 +256,7 @@ while True:
 # -------------------------------------------------------------
     if x_zero is not None or x1 is not None:
         if x1 is not None:
+            # set zoom so that you can see vertex and zero places
             min_zoom = -abs(int(x1) + int(q)) - 2
             max_zoom = -min_zoom
             if max_zoom < x2:
@@ -265,6 +266,7 @@ while True:
                 min_zoom = -abs(int(x1) + int(q)) - 2
                 max_zoom = -min_zoom
         else:
+            # set zoom so that you can see zero place
             if c > 0:
                 min_zoom = int(x_zero) - 4
                 max_zoom = -min_zoom
@@ -283,7 +285,8 @@ while True:
             # if only c in not 0 set so that you can see function
             min_zoom = int(-c) - 4
             max_zoom = -min_zoom
-
+    
+    # set zoom at atleast 4
     if max_zoom < 4:
         max_zoom = 4
         min_zoom = -max_zoom
