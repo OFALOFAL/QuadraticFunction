@@ -20,5 +20,5 @@ Run
 
 Preview:
 ---
-![image](https://user-images.githubusercontent.com/91374689/204101410-76477e0b-f02d-4f46-9f1a-dd700db93f34.png)
+![image](https://user-images.githubusercontent.com/91374689/204133747-042b47ec-5168-41d3-8528-d5688b786c72.png)
 
