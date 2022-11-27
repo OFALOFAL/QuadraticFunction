@@ -5,10 +5,16 @@ from math import sqrt
 from color import COLORS
 
 
+# -------------------------------------------------------------
+# clear console
+# -------------------------------------------------------------
 def clear():
     os.system('CLS')
 
 
+# -------------------------------------------------------------
+# start menu
+# -------------------------------------------------------------
 def menu(ref_a: float, ref_b: float, ref_c: float, ref_color: int):
     while True:
         clear()
@@ -28,7 +34,8 @@ def menu(ref_a: float, ref_b: float, ref_c: float, ref_color: int):
                        '4: change color\n'
                        '5: calculate\n'
                        '0: exit\n> ')
-        # mach option
+
+        # mach option if correctly typed
         if choice.isnumeric():
             match int(choice):
                 case 1:
@@ -66,40 +73,48 @@ def menu(ref_a: float, ref_b: float, ref_c: float, ref_color: int):
                     return None, None, None, None
 
 
-# set default
+# -------------------------------------------------------------
+# set some defaults on top to save for next runs'
+# -------------------------------------------------------------
 a = 1
 b = 0
 c = -1
 color = 100
 x_zero_name = "Inf. number of zero points"
+
+# -------------------------------------------------------------
+# start the loop
+# -------------------------------------------------------------
 while True:
-    # get values from menu
+# -------------------------------------------------------------
+    # get info from user
+# -------------------------------------------------------------
     a, b, c, color = menu(a, b, c, color)
     if a is None:
         break
 
+# -------------------------------------------------------------
     # set window
+# -------------------------------------------------------------
     root = Tk()
     root.title('Quadratic Function')
     root.geometry("1200x800")
     root.resizable(False, False)
 
-    # seperate info from graph
-    sep = ttk.Separator(orient=VERTICAL)
-    sep.place(x=195, y=0, relheight=1)
-
-    # deafult half of Cartesian coordinate system
-    half_size = 350
-    canvas = Canvas(root, width=1000, height=800)
-    canvas.create_line(100, 400, 800, 400)  # x
-    canvas.create_line(450, 50, 450, 750)  # y
-
-    # calculate delta
-    delta = b ** 2 - 4 * a * c
-
+# -------------------------------------------------------------
+    # set default values
+# -------------------------------------------------------------
     # set default for zero places
     x_zero = None
     x1, x2 = None, None
+    # set deafult half of Cartesian coordinate system
+    half_size = 350
+
+# -------------------------------------------------------------
+    # calculate needed on top
+# -------------------------------------------------------------
+    # calculate delta
+    delta = b ** 2 - 4 * a * c
 
     # calculate zero places
     if delta < 0:
@@ -123,6 +138,15 @@ while True:
     else:
         x_zero_name = "No points"
 
+# -------------------------------------------------------------
+    # set info
+# -------------------------------------------------------------
+    # seperate info from graph
+    sep = ttk.Separator(orient=VERTICAL)
+    sep.place(x=195, y=0, relheight=1)
+
+    # Canvas init
+    canvas = Canvas(root, width=1000, height=800)
     canvas.pack(side=RIGHT)
 
     # set info
@@ -134,6 +158,7 @@ while True:
     d_input_label = Label(root, text=d_input_text)
     d_input_label.pack(side=LEFT and TOP)
 
+    # set Canonical form info
     if a != 0:
         p, q = -b / (2 * a), -delta / (4 * a)
         p_input_text = "p = {:.2f}".format(p)
@@ -171,6 +196,7 @@ while True:
         can_input_label = Label(root, text=can_input_text)
         can_input_label.pack(side=LEFT and TOP)
 
+    # set a, b, c info
     a_input_text = f"a = {a}"
     a_input_label = Label(root, text=a_input_text)
     a_input_label.pack(side=LEFT and TOP)
@@ -183,88 +209,218 @@ while True:
     c_input_label = Label(root, text=c_input_text)
     c_input_label.pack(side=LEFT and TOP)
 
-    f_input_text = f'y = {a}x^2 + {b}x + {c}\n\n'
+    # set general form info
+    if a != 0:
+        if b >= 0:
+            if c > 0:
+                f_input_text = 'y = {:.2f}x^2 + {:.2f}x + {:.2f}\n\n'.format(a, b, c)
+            elif c == 0:
+                f_input_text = 'y = {:.2f}x^2 + {:.2f}x\n\n'.format(a, b)
+            else:
+                f_input_text = 'y = {:.2f}x^2 + {:.2f}x - {:.2f}\n\n'.format(a, b, -c)
+        elif b == 0:
+            if c > 0:
+                f_input_text = 'y = {:.2f}x^2 + {:.2f}\n\n'.format(a, c)
+            elif c == 0:
+                f_input_text = 'y = {:.2f}x^2\n\n'.format(a)
+            else:
+                f_input_text = 'y = {:.2f}x^2 - {:.2f}\n\n'.format(a, -c)
+        else:
+            if c > 0:
+                f_input_text = 'y = {:.2f}x^2 - {:.2f}x + {:.2f}\n\n'.format(a, -b, c)
+            elif c == 0:
+                f_input_text = 'y = {:.2f}x^2 - {:.2f}x\n\n'.format(a, -b)
+            else:
+                f_input_text = 'y = {:.2f}x^2 - {:.2f}x - {:.2f}\n\n'.format(a, -b, -c)
+    else:
+        if b == 0:
+            f_input_text = 'y = {:.2f}\n\n'.format(c)
+        else:
+            if c > 0:
+                f_input_text = 'y = {:.2f}x + {:.2f}\n\n'.format(b, c)
+            elif c == 0:
+                f_input_text = 'y = {:.2f}x\n\n'.format(b)
+            else:
+                f_input_text = 'y = {:.2f}x - {:.2f}\n\n'.format(b, -c)
+
     f_input_label = Label(root, text=f_input_text)
     f_input_label.pack(side=LEFT and TOP)
 
+    # set zero place info
     zero_place_text = f"f(x)=0 for:\n{x_zero_name}"
     zero_place_label = Label(root, text=zero_place_text)
     zero_place_label.pack(side=LEFT and TOP)
 
+# -------------------------------------------------------------
     # set zoom range
+# -------------------------------------------------------------
     if x_zero is not None or x1 is not None:
         if x1 is not None:
-            x_min = -abs(int(x1) + int(q)) - 2
-            x_max = -x_min
-            if x_max < x2:
-                x_max = -abs(int(x1) + int(q)) - 2
-                x_min = -x_max
-            if x_min > x1:
-                x_min = -abs(int(x1) + int(q)) - 2
-                x_max = -x_min
+            min_zoom = -abs(int(x1) + int(q)) - 2
+            max_zoom = -min_zoom
+            if max_zoom < x2:
+                max_zoom = -abs(int(x1) + int(q)) - 2
+                min_zoom = -max_zoom
+            if min_zoom > x1:
+                min_zoom = -abs(int(x1) + int(q)) - 2
+                max_zoom = -min_zoom
         else:
             if c > 0:
-                x_min = int(x_zero) - 3
-                x_max = -x_min
-            if c < 0:
-                x_max = int(x_zero) + 3
-                x_min = -x_max
+                min_zoom = int(x_zero) - 4
+                max_zoom = -min_zoom
+            elif c < 0:
+                max_zoom = int(x_zero) + 4
+                min_zoom = -max_zoom
+            else:
+                min_zoom = -4
+                max_zoom = 4
     else:
-        x_min = int(-c) - 3
-        x_max = -x_min
+        min_zoom = int(-c) - 4
+        max_zoom = -min_zoom
+
+    if max_zoom < 4:
+        max_zoom = 4
+        min_zoom = -max_zoom
 
     # set zoom
-    zoom = half_size / abs(x_max)
+    zoom = half_size / abs(max_zoom)
 
-    # set labels for center and borders
-    mark_text_min = str(x_min)
-    mark_text_max = str(x_max)
-    top_label = Label(root, text=mark_text_max)
-    top_label.place(x=620, y=40, relheight=0.01, height=10)
+# -------------------------------------------------------------
+    # set ticks and labels for graph
+# -------------------------------------------------------------
+    # set main lines
+    canvas.create_line(95, 400, 805, 400)  # x
+    canvas.create_line(450, 45, 450, 755)  # y
 
-    bottom_label = Label(root, text=mark_text_min)
-    bottom_label.place(x=615, y=740, relheight=0.01, height=10)
+    # calculate step
+    step = 1
 
-    left_label = Label(root, text=mark_text_min)
-    left_label.place(x=280, y=405, relheight=0.01, height=10)
+    if c <= -1 or c >= 0:
+        while step < (abs(min_zoom) + abs(max_zoom)):
+            step *= 2
+        step //= 8
 
-    left_label = Label(root, text=mark_text_max)
-    left_label.place(x=980, y=405, relheight=0.01, height=10)
+    getLeftX = []
+    getLeftY = []
 
-    zero_point_label = Label(root, text='0')
-    zero_point_label.place(x=630, y=405, relheight=0.001, height=10)
+    # set x tick_labels and ticks
+    # left
+    for i in range(min_zoom, max_zoom // 2, step):
+        offset = 0
+        if i > 0:
+            break
+        elif i == 0:
+            offset = -5
+            new_tick = canvas.create_line(450 + i * zoom, 45, 450 + i * zoom, 755)  # add black tick if 0
+        else:
+            getLeftX.append(-i)     # add to the list if not 0
+            new_tick = canvas.create_line(450 + i * zoom, 45, 450 + i * zoom, 755, fill="grey50")   # add grey tick if not 0
 
+        new_tick_label = Label(root, text=str(i))
+        new_tick_label.place(x=635 + i * zoom + offset, y=410, relheight=0.001, height=10)
+
+    # right
+    itr = len(getLeftX) - 1
+    for i in range(max_zoom, min_zoom + min_zoom // 2, -step):
+        offset = 5
+        if i <= 0:
+            continue
+
+        new_tick_label = Label(root, text=str(getLeftX[itr]))
+        new_tick_label.place(x=635 + getLeftX[itr] * zoom + offset, y=410, relheight=0.001, height=10)
+        new_tick = canvas.create_line(450 + getLeftX[itr] * zoom, 45, 450 + getLeftX[itr] * zoom, 755, fill="grey50")
+        itr -= 1
+
+    # set y tick_labels and ticks
+    # top
+    for i in range(min_zoom, max_zoom // 2 - 2, step):
+        if i >= 0:
+            continue
+        else:
+            getLeftY.append(-i)     # add to the list if not 0
+
+        new_tick_label = Label(root, text=str(-i))
+        new_tick_label.place(x=625, y=395 + i * zoom, relheight=0.001, height=10)
+        new_tick = canvas.create_line(95, 400 + i * zoom, 805, 400 + i * zoom, fill="grey50")
+
+    # bottom
+    itr = len(getLeftY) - 1
+    for i in range(max_zoom, min_zoom + min_zoom // 2 - 1, -step):
+        if i <= 0:
+            continue
+        new_tick_label = Label(root, text=str(-getLeftY[itr]))
+        new_tick_label.place(x=625, y=395 + getLeftY[itr] * zoom, relheight=0.001, height=10)
+        new_tick = canvas.create_line(95, 400 + getLeftY[itr] * zoom, 805, 400 + getLeftY[itr] * zoom, fill="grey32")
+        itr -= 1
+
+    # draw (0, 0) coordinate label
+    new_tick_label = Label(root, text=str(0))
+    new_tick_label.place(x=630, y=410, relheight=0.001, height=10)
+
+    # draw zero-points
+    if x1 is not None:
+        x1_label = Label(root, text="{:.1f}".format(x1))
+        x1_label.place(x=630 + x1 * zoom, y=380, relheight=0.001, height=10)
+
+        x2_label = Label(root, text="{:.1f}".format(x2))
+        x2_label.place(x=635 + x2 * zoom, y=380, relheight=0.001, height=10)
+    elif x_zero is not None and -x_zero not in getLeftX and x_zero != 0:
+        x1_label = Label(root, text="{:.1f}".format(x_zero))
+        x1_label.place(x=630 + x_zero * zoom, y=380, relheight=0.001, height=10)
+
+    # draw x and y for vertex if needed
+    if a != 0:
+        if -p not in getLeftX and p != 0:
+            p_vertex_label = Label(root, text="{:.1f}".format(p))
+            p_vertex_label.place(x=635 + p * zoom, y=380, relheight=0.001, height=10)
+            new_tick = canvas.create_line(450 + p * zoom, 0, 450 + p * zoom, 800, fill=COLORS[color], dash=(2, 2))
+
+        if -q not in getLeftY and q != 0:
+            q_vertex_label = Label(root, text="{:.1f}".format(q))
+            q_vertex_label.place(x=650, y=395 + -q * zoom, relheight=0.001, height=10)
+            new_tick = canvas.create_line(0, 400 + -q * zoom, 900, 400 + -q * zoom, fill=COLORS[color], dash=(2, 2))
+
+# -------------------------------------------------------------
+    # calculate function
+# -------------------------------------------------------------
     # reverse for reversed yaxis on tkinter
     a = -a / zoom
     b = -b
     c = -c * zoom
 
-    # function
-    for i in range(x_min, x_max, 1):
+    # iterate through every point
+    for i in range(min_zoom, max_zoom):
+        # set x to fit to the zoom
         x = i * zoom
         xP1 = x + (0.1 * zoom)
 
+        # iterate through every 0.05 in range to get more precise graph
         while x < i * zoom + 1 * zoom:
+            # get first and second y NOTE: no need for changing them for zoom becouse x is already changed
             first_y = (a * (x ** 2)) + (b * x) + c
             second_y = (a * (xP1 ** 2)) + (b * xP1) + c
 
+            # add shift to get x and y correctly to the (0, 0) point that is set on window's coordinates on (450, 400)
             first_x_shift = x + 450
             second_x_shift = xP1 + 450
+            first_y_shift = first_y + 400
+            second_y_shift = second_y + 400
 
-            first_y += 400
-            second_y += 400
-
+            # draw line
             canvas.create_line(first_x_shift,
-                               first_y,
+                               first_y_shift,
                                second_x_shift,
-                               second_y,
+                               second_y_shift,
                                fill=COLORS[color], width=2)
-            x += 0.1 * zoom
-            xP1 += 0.1 * zoom
 
-    # set back to normal state
+            # increment
+            x += 0.05 * zoom
+            xP1 += 0.05 * zoom
+
+    # set back to normal state for next runs of the same function
     a = -a * zoom
     b = -b
     c = -c / zoom
 
+    # start graph's loop
     root.mainloop()
