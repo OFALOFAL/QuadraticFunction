@@ -6,6 +6,17 @@ from color import COLORS
 
 
 # -------------------------------------------------------------
+# check if entered number is valid
+# -------------------------------------------------------------
+def is_digit(test_str: str) -> bool:
+    try:
+        float(test_str)
+        return True
+    except:
+        return False
+    
+
+# -------------------------------------------------------------
 # clear console
 # -------------------------------------------------------------
 def clear():
@@ -40,15 +51,15 @@ def menu(ref_a: float, ref_b: float, ref_c: float, ref_color: int):
             match int(choice):
                 case 1:
                     temp = input("a: ")
-                    if temp.isnumeric() or temp[0] == '-' or '.' in temp:
+                    if is_digit(temp):
                         ref_a = float(temp)
                 case 2:
                     temp = input("b: ")
-                    if temp.isnumeric() or temp[0] == '-' or '.' in temp:
+                    if is_digit(temp):
                         ref_b = float(temp)
                 case 3:
                     temp = input("c: ")
-                    if temp.isnumeric() or temp[0] == '-' or '.' in temp:
+                    if is_digit(temp):
                         ref_c = float(temp)
                 case 4:
                     temp = input("type number to choose, anything else to see viable colors\n"
@@ -150,7 +161,10 @@ while True:
     canvas.pack(side=RIGHT)
 
     # set info
-    enter_text = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    if a == 0:
+        enter_text = "\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis is a Linear Function!\n"
+    else:
+        enter_text = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     a_input_label = Label(root, text=enter_text)
     a_input_label.pack(side=LEFT and TOP)
 
@@ -251,6 +265,32 @@ while True:
     zero_place_label = Label(root, text=zero_place_text)
     zero_place_label.pack(side=LEFT and TOP)
 
+    # set product form info
+    if x1 is not None:
+        if x1 >= 0:
+            if x2 >= 0:
+                prod_input_text = "product form:\n{:.2f}(x - {:.2f})(x - {:.2f})\n".format(a, x1, x2)
+            else:
+                prod_input_text = "product form:\n{:.2f}(x - {:.2f})(x + {:.2f})\n".format(a, x1, -x2)
+        else:
+            if q >= 0:
+                prod_input_text = "product form:\n{:.2f}(x + {:.2f})(x - {:.2f})\n".format(a, -x1, x2)
+            else:
+                prod_input_text = "Product form:\n{:.2f}(x + {:.2f})(x + {:.2f})\n".format(a, -x1, -x2)
+    else:
+        if a == 0:
+            prod_input_text = "Product form:\nNo for Linear function"
+        elif x_zero is not None:
+            if x_zero >= 0:
+                prod_input_text = "product form:\n{:.2f}(x - {:.2f})(x - {:.2f})\n".format(a, x_zero, x_zero)
+            else:
+                prod_input_text = "product form:\n{:.2f}(x + {:.2f})(x + {:.2f})\n".format(a, -x_zero, -x_zero)
+        else:
+            prod_input_text = "Product form:\nNo for this function"
+
+    prod_input_label = Label(root, text=prod_input_text)
+    prod_input_label.pack(side=LEFT and TOP)
+
 # -------------------------------------------------------------
     # set zoom range
 # -------------------------------------------------------------
@@ -285,7 +325,7 @@ while True:
             # if only c in not 0 set so that you can see function
             min_zoom = int(-c) - 4
             max_zoom = -min_zoom
-    
+
     # set zoom at atleast 4
     if max_zoom < 4:
         max_zoom = 4
