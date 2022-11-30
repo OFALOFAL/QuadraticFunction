@@ -273,7 +273,7 @@ while True:
             else:
                 prod_input_text = "product form:\n{:.2f}(x - {:.2f})(x + {:.2f})\n".format(a, x1, -x2)
         else:
-            if q >= 0:
+            if x2 >= 0:
                 prod_input_text = "product form:\n{:.2f}(x + {:.2f})(x - {:.2f})\n".format(a, -x1, x2)
             else:
                 prod_input_text = "Product form:\n{:.2f}(x + {:.2f})(x + {:.2f})\n".format(a, -x1, -x2)
